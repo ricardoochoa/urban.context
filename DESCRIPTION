@@ -1,0 +1,12 @@
+Package: urban.context
+Type: Package
+Title: Urban context
+Version: 0.1
+Date: 2015-10-24
+Author: Ricardo Ochoa Sosa
+Maintainer: Ricardo Ochoa Sosa <ochoasosaricardo@gmail.com>
+Description: For a selected point in x-y coordinates, subset and summarise points found in an specified radius. 
+Depends: sp
+License: GPL-2
+LazyData: FALSE
+NeedsCompilation: no

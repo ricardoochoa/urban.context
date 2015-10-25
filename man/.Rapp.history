@@ -1,0 +1,99 @@
+help("read.table")
+my.data <-#
+read.table(header = TRUE, text = "#
+x	y	variable#
+-99.495	19.16	0.36#
+-99.490	19.16	0.72#
+-99.500	19.14	2.89#
+-99.490	19.15	4.93#
+")
+my.data <-#
+read.table(header = TRUE, text = "#
+x	y	variable#
+-99.495	19.16	0.36#
+-99.490	19.16	0.72#
+-99.500	19.14	2.89#
+-99.490	19.15	4.93#
+")
+urban.context <-  function(x, y, dataframe, df.x = "x", df.y = "y", variable = "variable", radius = 1, FUN, empty.value = 0){#
+#
+  radius.b = radius / 50#
+#
+  dataframe <- dataframe[dataframe[,df.x] < x + radius.b &#
+                           dataframe[,df.x] > x - radius.b, ]#
+  dataframe <- dataframe[dataframe[,df.y] < y + radius.b &#
+                           dataframe[,df.y] > y - radius.b, ]#
+#
+  if (nrow(dataframe) > 0) {#
+    my.point <- SpatialPoints(coords = data.frame(x = x, y = y), proj4string=CRS("+proj=longlat +datum=WGS84"))#
+    my.units <- SpatialPoints(coords = dataframe[,c(df.x, df.y)], proj4string=CRS("+proj=longlat +datum=WGS84"))#
+#
+    dataframe$distance <- t(spDists(my.point, my.units, longlat=T))#
+#
+    dataframe <- subset(dataframe, distance <= radius)#
+#
+    return(FUN(dataframe[,variable]))} else{#
+      return(empty.value)}#
+}
+urban.context <-  function(x, y, data, df.x = "x", df.y = "y", variable = "variable", radius = 1, FUN, empty.value = 0){#
+#
+  radius.b = radius / 50#
+#
+  data <- data[data[,df.x] < x + radius.b &#
+                           data[,df.x] > x - radius.b, ]#
+  data <- data[data[,df.y] < y + radius.b &#
+                           data[,df.y] > y - radius.b, ]#
+#
+  if (nrow(data) > 0) {#
+    my.point <- SpatialPoints(coords = data.frame(x = x, y = y), proj4string=CRS("+proj=longlat +datum=WGS84"))#
+    my.units <- SpatialPoints(coords = data[,c(df.x, df.y)], proj4string=CRS("+proj=longlat +datum=WGS84"))#
+#
+    data$distance <- t(spDists(my.point, my.units, longlat=T))#
+#
+    data <- subset(data, distance <= radius)#
+#
+    return(FUN(data[,variable]))} else{#
+      return(empty.value)}#
+}
+urban.context(x=-99.490, y=19.16, data = my.data, FUN = sum)
+library(sp)
+my.data <-#
+read.table(header = TRUE, text = "#
+x	y	variable#
+-99.495	19.16	0.36#
+-99.490	19.16	0.72#
+-99.500	19.14	2.89#
+-99.490	19.15	4.93#
+")#
+#
+urban.context(x=-99.490, y=19.16, data = my.data, FUN = sum)
+plot(my.data$x, my.data$y)
+my.data <-#
+read.table(header = TRUE, text = "#
+x	y	variable#
+-99.495	19.16	8#
+-99.490	19.16	3#
+-99.500	19.14	1#
+-99.490	19.15	6#
+")#
+#
+plot(my.data$x, my.data$y)#
+#
+urban.context(x=-99.490, y=19.16, data = my.data, FUN = sum)
+my.data <-#
+read.table(header = TRUE, text = "#
+x	y	variable#
+-99.495	19.16	1#
+-99.490	19.16	1#
+-99.500	19.14	1#
+-99.490	19.15	1#
+")#
+#
+plot(my.data$x, my.data$y)#
+#
+urban.context(x=-99.490, y=19.16, data = my.data, FUN = sum)
+my.data$distance <- t(spDists(#
+SpatialPoints(coords = data.frame(x = -99.490, y = 19.16), proj4string=CRS("+proj=longlat +datum=WGS84")), #
+SpatialPoints(coords = my.data[,c("x", "y")], proj4string=CRS("+proj=longlat +datum=WGS84")), #
+longlat=T))
+head(my.data)
